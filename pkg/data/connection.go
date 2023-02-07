@@ -46,6 +46,7 @@ func NewMongoConnection(cfg *config.Settings) Connection {
 }
 
 // Disconnect method    Disconnects from the Mongo instance
+// This will be called only when the Echo server stops.
 func (c Connection) Disconnect() {
 	c.Client.Disconnect(c.ctx)
 }
