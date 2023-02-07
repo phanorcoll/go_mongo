@@ -42,6 +42,16 @@ func (a App) ConfigureRoutes() {
 	a.server.GET("/v1/public/healthy", a.HealthCheck)
 	a.server.POST("/v1/public/account/register", a.Register)
 	a.server.POST("/v1/public/account/login", a.Login)
+
+	protected := a.server.Group("vi/api")
+
+	middlaware := Middleware{config: a.cfg}
+
+	protected.Use(middlaware.Auth)
+	protected.GET("/secret", func(c echo.Context) error {
+		userId := c.Get("user").(string)
+		return c.String(200, userId)
+	})
 }
 
 // Start method    initiates the Echo server
